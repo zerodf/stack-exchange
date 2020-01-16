@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  BucketNameParam:
+    Description: Enter the name of your source bucket
+    Type: String
+  DatabaseName:
+    Type: String
+    Default: db46820058
+Resources:
+  TestBucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: 
+        Ref: BucketNameParam
+      Tags:
+        - Key: StackOverflow
+          Value: 59694539
+      PublicAccessBlockConfiguration:
+        RestrictPublicBuckets: True
+        IgnorePublicAcls: True
+  GlueDB:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput: 
+        Name: !Ref DatabaseName
+        Description: Database to hold dev tables
+  MyTable:
+    Type: AWS::Glue::Table
+    Properties: 
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref DatabaseName
+      TableInput: 
+        Description: Table Created Via Cloudformation
